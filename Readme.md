@@ -1,0 +1,16 @@
+# plg
+
+Small bot discord
+
+## env variables
+
+DISCORD_TOKEN=
+CLIENT_ID=
+GUILD_ID=
+CHANNEL_GROUP=
+DB_USER=
+DB_HOST=
+DB_NAME=
+DB_PASSWORD=
+DB_PORT
+CONNECTION_COMMAND=
