@@ -13,12 +13,17 @@ export const execute = async (interaction) => {
     for (const memberLoggedIn of membersListId) {
       logger.info(memberLoggedIn.discordId);
       const targetChannelId = memberLoggedIn.teamChannelId;
+      if (!targetChannelId) {
+        logger.warn(
+          `the user ${memberLoggedIn.discordId} ${memberLoggedIn.discordName} has not team, cant move it`,
+        );
+        return;
+      }
       try {
         const member = await interaction.guild.members.fetch({
           user: memberLoggedIn.discordId,
           timeout: 6000,
         });
-        logger.info(member);
         await member.voice.setChannel(targetChannelId);
         results.push(`Successfully moved ${member.user.tag}`);
       } catch (error) {

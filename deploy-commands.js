@@ -10,18 +10,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const commands = [];
-// Grab all the command folders from the commands directory you created earlier
 const foldersPath = join(__dirname, "commands");
 const commandFolders = readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
   logger.info(folder);
-  // Grab all the command files from the commands directory you created earlier
   const commandsPath = join(foldersPath, folder);
   const commandFiles = readdirSync(commandsPath).filter((file) =>
     file.endsWith(".js"),
   );
-  // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
   for (const file of commandFiles) {
     const filePath = join(commandsPath, file);
     const command = await import(filePath);

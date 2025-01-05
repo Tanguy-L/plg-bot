@@ -1,45 +1,11 @@
 import { Events } from "discord.js";
 import logger from "../logger.js";
 import { membersListId } from "../members.js";
-
+import { toCamelObject, isEmpty } from "../utilities.js";
 import { getMemberWithTeam } from "../db/index.js";
 export const name = Events.ClientReady;
 export const once = true;
 
-function toCamelObject(o) {
-  var newO, origKey, newKey, value;
-  if (o instanceof Array) {
-    return o.map(function (value) {
-      if (typeof value === "object") {
-        value = toCamelObject(value);
-      }
-      return value;
-    });
-  } else {
-    newO = {};
-    for (origKey in o) {
-      if (o.hasOwnProperty(origKey)) {
-        newKey = snakeToCamel(origKey);
-        value = o[origKey];
-        if (
-          value instanceof Array ||
-          (value !== null && value.constructor === Object)
-        ) {
-          value = toCamelObject(value);
-        }
-        newO[newKey] = value;
-      }
-    }
-  }
-  return newO;
-}
-
-const snakeToCamel = (str) =>
-  str
-    .toLowerCase()
-    .replace(/([-_][a-z])/g, (group) =>
-      group.toUpperCase().replace("-", "").replace("_", ""),
-    );
 export const execute = async (client) => {
   logger.info(`Ready! Logged in as ${client.user.tag}`);
   const guilds = client.guilds.cache;
@@ -82,10 +48,20 @@ export const execute = async (client) => {
   });
 
   const membersInfos = await Promise.all(promises);
+
   membersInfos.forEach((memberInfos) => {
     const resultQuery = memberInfos[0];
+
+    if (isEmpty(resultQuery)) {
+      logger.info("No member info found actually !");
+    }
+
     const formattedMember = toCamelObject(resultQuery);
-    membersListId.push(formattedMember);
+    if (formattedMember.discordId) {
+      membersListId.push(formattedMember);
+    } else {
+      logger.warn("User has no discordId, not added");
+    }
   });
 
   if (membersListId.length) {
