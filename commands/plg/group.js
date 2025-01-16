@@ -1,8 +1,8 @@
 import { SlashCommandBuilder } from "discord.js";
 import logger from "../../logger.js";
 import { membersListId } from "../../members.js";
+import { sleep } from "../../utilities.js";
 import "dotenv/config";
-import { log } from "node:console";
 
 export const data = new SlashCommandBuilder()
   .setName("group-teams")
@@ -38,6 +38,8 @@ export const execute = async (interaction) => {
         await member.voice.setChannel(targetChannelId);
 
         results.push(`Successfully moved ${member.user.tag}`);
+
+        sleep(100);
       } catch (error) {
         results.push(
           `Failed to move ${memberLoggedIn.discordId}: ${error.message}`,

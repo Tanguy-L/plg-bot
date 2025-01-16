@@ -1,4 +1,4 @@
 node_modules
 plg_meanings.txt
 .yarn
-.env
+.env*

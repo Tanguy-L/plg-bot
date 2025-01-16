@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from "discord.js";
 import logger from "../../logger.js";
 import { membersListId } from "../../members.js";
+import { sleep } from "../../utilities.js";
 import "dotenv/config";
 
 export const data = new SlashCommandBuilder()
@@ -26,6 +27,8 @@ export const execute = async (interaction) => {
         });
         await member.voice.setChannel(targetChannelId);
         results.push(`Successfully moved ${member.user.tag}`);
+
+        sleep(100);
       } catch (error) {
         results.push(
           `Failed to move ${memberData.discordId}: ${memberError.message}`,

@@ -26,6 +26,10 @@ export const toCamelObject = (o) => {
   return newO;
 };
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export const snakeToCamel = (str) =>
   str
     .toLowerCase()
