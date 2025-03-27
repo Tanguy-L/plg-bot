@@ -1,6 +1,6 @@
 # plg
 
-Small bot discord
+Small bot discord (éclatax le bot)
 
 ## env variables
 
